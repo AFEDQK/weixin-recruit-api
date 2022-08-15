@@ -181,7 +181,7 @@ def process_return(types, money, acquire, number, contact, city, work_time, plac
     if type(types) == list:
         tmp = []
         for t in types:
-            if '不要' + t in content or t + '不要' in content or '不是' + t in content or t + '不是' in content:
+            if '不要' + t in content or t + '不要' in content or '不是' + t in content or t + '不是' in content or '双证' + t in content or t + '双证' in content:
                 continue
             else:
                 tmp.append(t)
