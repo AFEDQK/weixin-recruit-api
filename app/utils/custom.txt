@@ -10,7 +10,12 @@
 聘/v
 苏康码/others
 周结/others
+消防水工/types
+消防电/types
 绿码/others
+云贵川/LOC
+任章国/PER
+法休/others
 上海奉贤区金山区/LOC
 北京市/LOC
 噶噶/others
