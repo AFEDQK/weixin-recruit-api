@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = "sdfsdfasdf"
 
 
-@app.route("/msgProcess/findJob", methods=["GET"])
+@app.route("/msgProcess/findJob", methods=["POST"])
 def findJob():
     original_text = request.form.get("text", None)
     if not original_text:
@@ -17,7 +17,7 @@ def findJob():
     return jsonify(job_info)
 
 
-@app.route("/msgProcess/recruit", methods=["GET"])
+@app.route("/msgProcess/recruit", methods=["POST"])
 def recruit():
     original_text = request.form.get("text", None)
     if not original_text:
