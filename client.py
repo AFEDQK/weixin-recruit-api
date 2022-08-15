@@ -17,7 +17,6 @@ def load_data(fp):
                 continue
             data.append(line[0])
     print(len(data))
-    print(data)
     return data
 
 
@@ -28,7 +27,7 @@ def test_special_example(data):
     result = []
     start_time = time.time()
     for text in data:
-        ret = requests.get(url, data={"text": text})
+        ret = requests.post(url, data={"text": text})
         res = json.loads(ret.text)
         if not res:
             continue
