@@ -2,12 +2,63 @@ from app.utils.process_recruit_detail_info import extract_info
 from app.utils.process_job_info import handle_search
 import re
 
+"""
+{'期望工作地点': [], '招工单位': [], '招工信息': [{'工种': '', '期望工作地点': '', '招工单位': [], '招工人数': '', 
+'联系人': [], '联系电话': '15822775267'}], '联系人': '无', '联系电话': ['15822775267'], '联系微信': '无', 
+'项目内容': '专业格栅;方通;矿棉板;'}
+{'期望工作地点': '', '招工单位': [], '招工信息': [{'工种': ['吊顶'], '期望工作地点': '', '招工单位': [], 
+'招工人数': [], '联系人': [], '联系电话': '15822775267'}], 
+'联系人': '无', '联系电话': ['15822775267'], '联系微信': '无', '项目内容': '专业格栅;方通;矿棉板;'}
+"""
+
+
+def to_str(item):
+    if type(item) == str:
+        return item
+    else:
+        if not item:
+            return ""
+        return "".join(item)
+
+
+def to_list(item):
+    if type(item) == list:
+        return item
+    else:
+        if not item:
+            return []
+        return [item]
+
+
+def format_return_result(res):
+    formated_res = dict()
+    formated_res["期望工作地点"] = to_list(res["期望工作地点"])
+    formated_res["招工单位"] = to_list(res["招工单位"])
+    recruit_infos = res["招工信息"]
+    formated_res["联系人"] = to_str(res["联系人"])
+    formated_res["联系电话"] = to_list(res["联系电话"])
+    formated_res["联系微信"] = to_str(res["联系微信"])
+    formated_res["项目内容"] = res["项目内容"]
+    new_recruit_info = []
+    for each_info in recruit_infos:
+        info_dict = dict()
+        info_dict["工种"] = to_str(each_info["工种"])
+        info_dict["期望工作地点"] = to_str(each_info["期望工作地点"])
+        info_dict["招工单位"] = to_list(each_info["招工单位"])
+        info_dict["招工人数"] = to_str(each_info["招工人数"])
+        info_dict["联系人"] = to_list(each_info["联系人"])
+        info_dict["联系电话"] = to_str(each_info["联系电话"])
+        new_recruit_info.append(info_dict)
+    formated_res["招工信息"] = new_recruit_info
+    return formated_res
+
 
 def seg_punc(msg):
     pattern = r'\n|\t|:|：|,|，| |!|！|\n'
+    if not isinstance(msg, str):
+        return {}
     result = re.split(pattern, msg)
     res, types, number, city, place, contact = extract_info(msg, None, None, None)
-    print(result)
     for i in range(len(result)):
         for j in range(len(types)):
             p1 = re.compile(types[j])
@@ -58,13 +109,14 @@ def seg_punc(msg):
         #     qa_sentence += "。"
     # print(qa_sentence)
     res['项目内容'] = qa_sentence
+    formated_res = format_return_result(res)
+    return formated_res
 
-    # json_data = json.dumps(res, indent=4, ensure_ascii=False)
-    # return json_data
-    return res
 
 def find_job(msg):
     pattern = r'\n|\t|:|：|,|，| |!|！|\n'
+    if not isinstance(msg, str):
+        return {}
     result = re.split(pattern, msg)
     res, person, city, types, contact = handle_search(msg)
     # types = "你好"
@@ -120,7 +172,6 @@ def find_job(msg):
         # if i == len(result) - 1:
         #     qa_sentence += "。"
     # print(qa_sentence)
-    res['项目内容'] = qa_sentence
-    # json_data = json.dumps(res, indent=4, ensure_ascii=False)
-    return res
-
+    res["项目内容"] = qa_sentence
+    formated_res = format_return_result(res)
+    return formated_res

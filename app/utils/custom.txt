@@ -99,7 +99,6 @@
 小时工/types
 日结工/types
 女工/types
-流水线/types
 整机装配/types
 跟单管理员/types
 长期小时工/types
@@ -293,7 +292,6 @@
 预算/types
 成本会计/types
 测绘/types
-工长/types
 监理/types
 实习生/types
 项目经理/types
@@ -332,7 +330,6 @@
 锡焊/types
 装配工/types
 组装工/types
-鞋厂/types
 箱包/types
 服装厂招工/types
 印刷厂招工/types
