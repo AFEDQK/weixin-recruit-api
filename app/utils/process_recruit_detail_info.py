@@ -257,8 +257,6 @@ def process_return(types, money, acquire, number, contact, city, work_time, plac
             break
     res = {"期望工作地点": city, "招工单位": place, "招工信息": all_info, "联系人": "无",
            "联系电话": contact, "联系微信": "无", "项目内容": "无"}
-    json_data = json.dumps(res, indent=4, ensure_ascii=False)
-    print(json_data)
     return res, types, number, city, place, contact
 
 

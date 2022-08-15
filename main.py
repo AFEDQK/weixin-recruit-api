@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask, request, jsonify
+from app.exceptions import InputNotFound
 
 from app.utils.get_parse_data import find_job, seg_punc
 
@@ -11,8 +12,10 @@ app.secret_key = "sdfsdfasdf"
 @app.route("/msgProcess/findJob", methods=["POST"])
 def findJob():
     original_text = request.form.get("text", None)
+    if original_text is None:
+        original_text = request.args.get("text", None)
     if not original_text:
-        logging.info("The input text is empty")
+        raise InputNotFound(original_text)
     job_info = find_job(original_text)
     return jsonify(job_info)
 
@@ -20,8 +23,10 @@ def findJob():
 @app.route("/msgProcess/recruit", methods=["POST"])
 def recruit():
     original_text = request.form.get("text", None)
+    if original_text is None:
+        original_text = request.args.get("text", None)
     if not original_text:
-        logging.info("The input text is empty")
+        raise InputNotFound(original_text)
     parse_result = seg_punc(original_text)
     return jsonify(parse_result)
 
