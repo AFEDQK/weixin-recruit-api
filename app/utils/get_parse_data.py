@@ -1,11 +1,10 @@
 from app.utils.process_recruit_detail_info import extract_info
 from app.utils.process_job_info import handle_search
 import re
+from app.extensions import config_loader
 
+all_regions = config_loader.load_region()
 """
-{'期望工作地点': [], '招工单位': [], '招工信息': [{'工种': '', '期望工作地点': '', '招工单位': [], '招工人数': '', 
-'联系人': [], '联系电话': '15822775267'}], '联系人': '无', '联系电话': ['15822775267'], '联系微信': '无', 
-'项目内容': '专业格栅;方通;矿棉板;'}
 {'期望工作地点': '', '招工单位': [], '招工信息': [{'工种': ['吊顶'], '期望工作地点': '', '招工单位': [], 
 '招工人数': [], '联系人': [], '联系电话': '15822775267'}], 
 '联系人': '无', '联系电话': ['15822775267'], '联系微信': '无', '项目内容': '专业格栅;方通;矿棉板;'}
@@ -30,9 +29,23 @@ def to_list(item):
         return [item]
 
 
+def postprocess_working_place(working_place):
+    filtered_places = []
+    if len(working_place) <= 1:
+        return []
+    else:
+        for each_place in working_place:
+            if each_place not in all_regions:
+                continue
+            filtered_places.append(each_place)
+        return filtered_places
+
+
 def format_return_result(res):
     formated_res = dict()
-    formated_res["期望工作地点"] = to_list(res["期望工作地点"])
+    working_place = to_list(res["期望工作地点"])
+    # 处理单独省、市、区的情况，以及不正确的地址
+    formated_res["期望工作地点"] = postprocess_working_place(working_place)
     formated_res["招工单位"] = to_list(res["招工单位"])
     recruit_infos = res["招工信息"]
     formated_res["联系人"] = to_str(res["联系人"])
