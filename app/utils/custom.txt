@@ -462,3 +462,7 @@ C1驾照司机/types
 铲车司机！电焊工/types
 c1照4米2以下可开/types
 吊车/types
+光明区/LOC
+机场/LOC
+咸阳/LOC
+永安/LOC
