@@ -35,9 +35,13 @@ def postprocess_working_place(working_place):
         return []
     else:
         for each_place in working_place:
-            if each_place not in all_regions and len(each_place) < 2:
+            if each_place in all_regions:
+                filtered_places.append(each_place)
                 continue
-            filtered_places.append(each_place)
+            if len(each_place) > 1:
+                filtered_places.append(each_place)
+        if len(filtered_places) <= 1:
+            return []
         return filtered_places
 
 
