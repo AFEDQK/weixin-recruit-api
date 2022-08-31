@@ -3,7 +3,7 @@ from app.utils.process_job_info import handle_search
 import re
 from app.extensions import config_loader
 
-all_regions = config_loader.load_region()
+all_provinces = config_loader.load_region()
 """
 {'期望工作地点': '', '招工单位': [], '招工信息': [{'工种': ['吊顶'], '期望工作地点': '', '招工单位': [], 
 '招工人数': [], '联系人': [], '联系电话': '15822775267'}], 
@@ -31,17 +31,17 @@ def to_list(item):
 
 def postprocess_working_place(working_place):
     filtered_places = []
-    if len(working_place) <= 1:
+    if not working_place:
         return []
+    if len(working_place) == 1:
+        if working_place[0] in all_provinces:
+            return []
+        else:
+            return working_place
     else:
         for each_place in working_place:
-            if each_place in all_regions:
-                filtered_places.append(each_place)
-                continue
             if len(each_place) > 1:
                 filtered_places.append(each_place)
-        if len(filtered_places) <= 1:
-            return []
         return filtered_places
 
 
