@@ -30,19 +30,19 @@ def to_list(item):
 
 
 def postprocess_working_place(working_place):
-    filtered_places = []
     if not working_place:
         return []
-    if len(working_place) == 1:
-        if working_place[0] in all_provinces:
+    new_working_place = []
+    for item in working_place:
+        if len(item) > 1:
+            new_working_place.append(item)
+    if len(new_working_place) == 1:
+        if new_working_place[0] in all_provinces:
             return []
         else:
-            return working_place
+            return new_working_place
     else:
-        for each_place in working_place:
-            if len(each_place) > 1:
-                filtered_places.append(each_place)
-        return filtered_places
+        return new_working_place
 
 
 def format_return_result(res):

@@ -822,6 +822,7 @@ c1照4米2以下可开/types
 丰台/LOC
 石景山/LOC
 海淀/LOC
+海淀区/LOC
 门头沟/LOC
 房山/LOC
 通州/LOC
@@ -2187,3 +2188,10 @@ c1照4米2以下可开/types
 西藏/LOC
 宁夏/LOC
 内蒙古/LOC
+白刚/others
+干新建/others
+地址/others
+后三角/others
+大东宝马/others
+大理石/others
+江南/others
