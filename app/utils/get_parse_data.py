@@ -50,7 +50,12 @@ def format_return_result(res):
     working_place = to_list(res["期望工作地点"])
     # 处理单独省、市、区的情况，以及不正确的地址
     formated_res["期望工作地点"] = postprocess_working_place(working_place)
-    formated_res["招工单位"] = to_list(res["招工单位"])
+    # TODO:拍脑袋定的长度，后期修改
+    recruit_company = to_list(res["招工单位"])
+    if len(recruit_company) > 20:
+        formated_res["招工单位"] = []
+    else:
+        formated_res["招工单位"] = recruit_company
     recruit_infos = res["招工信息"]
     formated_res["联系人"] = to_str(res["联系人"])
     formated_res["联系电话"] = to_list(res["联系电话"])
@@ -121,10 +126,6 @@ def seg_punc(msg):
         if len(result[i]) != 0:
             qa_sentence += result[i]
             qa_sentence += ";"
-        # print(qa_sentence)
-        # if i == len(result) - 1:
-        #     qa_sentence += "。"
-    # print(qa_sentence)
     res['项目内容'] = qa_sentence
     formated_res = format_return_result(res)
     return formated_res
@@ -136,20 +137,14 @@ def find_job(msg):
         return {}
     result = re.split(pattern, msg)
     res, person, city, types, contact = handle_search(msg)
-    # types = "你好"
-    # print(len(types))
     print(result)
     for i in range(len(result)):
-        # print("测试", i, "：", result[i])
         for j in range(len(person)):
             # print(types[j])
             p1 = re.compile(person[j])
             m = p1.findall(result[i])
-            # print("工种匹配：", m)
             if len(m) != 0:
                 result[i] = ""
-                # print("工种匹配成功，以用空格替换")
-                # print("工种为：", types[j])
         for j in range(len(city)):
             p1 = re.compile(city[j])
             m = p1.findall(result[i])
